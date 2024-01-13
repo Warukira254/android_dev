@@ -22,8 +22,7 @@ class AppModule {
     @Provides
     fun provideFirestore(): FirebaseFirestore = Firebase.firestore
 
-    @Provides
-    fun provideStorage(): FirebaseStorage = Firebase.storage
+  
 
 
 }
