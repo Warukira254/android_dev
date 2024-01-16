@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.classwork.R
+import com.example.classwork.common.Routes
 import com.example.classwork.presentation.MainViewModel
 
 /*
@@ -37,6 +38,7 @@ import com.example.classwork.presentation.MainViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignupScreen(navController: NavController, vm: MainViewModel) {
+    CheckSignedIn(vm = vm, navController = navController)
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -85,6 +87,7 @@ fun SignupScreen(navController: NavController, vm: MainViewModel) {
             )
             Button(
                 onClick = {
+
                     vm.onSignup(
                         usernameState.value.text,
                         emailState.value.text,
@@ -100,6 +103,7 @@ fun SignupScreen(navController: NavController, vm: MainViewModel) {
                 modifier = Modifier
                     .padding(8.dp)
                     .clickable {
+                        navController.navigate(Routes.Login.route)
 
                     }
             )
@@ -107,4 +111,9 @@ fun SignupScreen(navController: NavController, vm: MainViewModel) {
 
 
     }
+}
+
+@Composable
+fun CheckSignedIn(vm: MainViewModel, navController: NavController) {
+
 }

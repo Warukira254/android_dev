@@ -8,17 +8,22 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.classwork.presentation.MainViewModel
 import com.example.classwork.presentation.common.NotificationMessage
+import com.example.classwork.presentation.screens.auth.LoginScreen
 import com.example.classwork.presentation.screens.auth.SignupScreen
 
 @Composable
 fun DemandApp() {
     val vm: MainViewModel = hiltViewModel()
     val navController = rememberNavController()
-    NotificationMessage(vm = vm)
+    NotificationMessage(vm=vm)
+
     NavHost(navController = navController, startDestination = Routes.Signup.route) {
 
+        composable(Routes.Login.route) {
+            LoginScreen(navController = navController, vm = vm)
+        }
         composable(Routes.Signup.route) {
-            SignupScreen(navController = navController, vm = vm)
+            SignupScreen(navController = navController, vm=vm)
         }
 
     }

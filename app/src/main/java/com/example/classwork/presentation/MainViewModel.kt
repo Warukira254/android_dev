@@ -82,7 +82,7 @@ class MainViewModel @Inject constructor(
             username = username ?: userData.value?.username,
             bio = bio ?: userData.value?.bio,
             imageUrl = imageUrl ?: userData.value?.imageUrl,
-            following = userData.value?.following
+
         )
 
         uid?.let { uid ->
@@ -121,6 +121,10 @@ class MainViewModel @Inject constructor(
         val errorMsg = exception?.localizedMessage ?: ""
         val message = if (customMessage.isEmpty()) errorMsg else "$customMessage: $errorMsg"
         popupNotification.value = Event(message)
+    }
+
+    fun onLogin(text: String, text1: String) {
+
     }
 
 }
