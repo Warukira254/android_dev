@@ -7,7 +7,7 @@ data class UserData(
     var username: String? = null,
     var imageUrl: String? = null,
     var bio: String? = null,
-    var role: String? = null,
+    var role:List<Roles>? = null,
     var services: List<String>? = null
 )
 {
@@ -19,6 +19,6 @@ data class UserData(
         "imageUrl" to imageUrl,
         "bio" to bio,
         "role" to role,
-        "servises" to services
+        "services" to services
     )
 }
