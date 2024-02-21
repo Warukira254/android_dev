@@ -1,5 +1,6 @@
 package com.example.classwork.common
 
+import SignupScreen
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -8,7 +9,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.classwork.presentation.MainViewModel
 import com.example.classwork.presentation.common.NotificationMessage
 import com.example.classwork.presentation.screens.auth.LoginScreen
-import com.example.classwork.presentation.screens.auth.SignupScreen
 import com.example.classwork.presentation.screens.main.MyProfileScreen
 import com.example.classwork.presentation.screens.main.MyServicesScreen
 import com.example.classwork.presentation.screens.main.SearchScreen
@@ -23,6 +23,7 @@ fun DemandApp() {
         composable(Routes.Profile.route) {
             MyProfileScreen(navController = navController, vm = vm)
         }
+        // Import the SignupScreen composable
         composable(Routes.Signup.route) {
             SignupScreen(navController = navController, vm = vm)
         }
@@ -38,6 +39,5 @@ fun DemandApp() {
         composable(Routes.MyServices.route) {
             MyServicesScreen(navController = navController, vm = vm)
         }
-
     }
 }

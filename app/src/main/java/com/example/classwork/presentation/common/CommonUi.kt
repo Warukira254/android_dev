@@ -1,3 +1,4 @@
+
 package com.example.classwork.presentation.common
 
 import android.widget.Toast
@@ -33,10 +34,11 @@ import com.example.classwork.presentation.MainViewModel
 
 @Composable
 fun NotificationMessage(vm: MainViewModel) {
-    val notifState = vm.popupNotification.value
-    val notifMessage = notifState?.getContentOrNull()
+    val notifState by vm.popupNotification
+    val notifMessage = notifState ?: return
+
     if (notifMessage != null) {
-        Toast.makeText(LocalContext.current, notifMessage, Toast.LENGTH_LONG).show()
+        Toast.makeText(LocalContext.current, notifMessage as CharSequence, Toast.LENGTH_LONG).show()
     }
 }
 

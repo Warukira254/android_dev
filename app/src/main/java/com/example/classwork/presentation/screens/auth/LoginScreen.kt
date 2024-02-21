@@ -1,8 +1,10 @@
 package com.example.classwork.presentation.screens.auth
 
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -34,29 +37,22 @@ import com.example.classwork.presentation.common.ProgressSpinner
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController, vm: MainViewModel) {
-    CheckSignedIn(vm = vm, navController =navController)
-    val focus = LocalFocusManager.current
+    CheckSignedIn(vm = vm, navController = navController)
+    val focusManager = LocalFocusManager.current
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .verticalScroll(
-                    rememberScrollState()
-                ),
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val emailState = remember { mutableStateOf(TextFieldValue()) }
             val passState = remember { mutableStateOf(TextFieldValue()) }
+//            val roleState = remember { mutableStateOf(emptySet<String>()) }
 
-//            Image(
-//                painter = painterResource(id = R.drawable.ig_logo),
-//                contentDescription = null,
-//                modifier = Modifier
-//                    .width(250.dp)
-//                    .padding(top = 16.dp)
-//                    .padding(8.dp)
-//            )
+
             Text(
                 text = "Login",
                 modifier = Modifier.padding(8.dp),
@@ -67,7 +63,8 @@ fun LoginScreen(navController: NavController, vm: MainViewModel) {
                 value = emailState.value,
                 onValueChange = { emailState.value = it },
                 modifier = Modifier.padding(8.dp),
-                label = { Text(text = "Email") })
+                label = { Text(text = "Email") }
+            )
             OutlinedTextField(
                 value = passState.value,
                 onValueChange = { passState.value = it },
@@ -75,13 +72,50 @@ fun LoginScreen(navController: NavController, vm: MainViewModel) {
                 label = { Text(text = "Password") },
                 visualTransformation = PasswordVisualTransformation()
             )
+            val roles = listOf("Admin", "Service Provider", "User")
+            val selectedRoles = remember { mutableStateOf(emptySet<String>()) }
+            roles.forEach { role ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable {
+                        if (selectedRoles.value.contains(role)) {
+                            selectedRoles.value -= role
+                        } else {
+                            selectedRoles.value += role
+                        }
+                    }
+                ) {
+                    Checkbox(
+                        checked = selectedRoles.value.contains(role),
+                        onCheckedChange = { isChecked ->
+                            if (isChecked) {
+                                selectedRoles.value += role
+                            } else {
+                                selectedRoles.value -= role
+                            }
+                        },
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                    Text(
+                        text = role,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
+            }
+
             Button(
                 onClick = {
-                    focus.clearFocus(force = true)
-                    vm.onLogin(emailState.value.text, passState.value.text)
+                    focusManager.clearFocus()
+                    if (selectedRoles.value.isEmpty()) {
+                        vm.onLoginError("Please select at least one role")
+                    } else {
+                        vm.onLogin(emailState.value.text, passState.value.text, selectedRoles.value)
+                    }
                 },
                 modifier = Modifier.padding(8.dp)
-            ) {
+            )
+
+            {
                 Text(text = "LOGIN")
             }
             Text(
@@ -94,11 +128,9 @@ fun LoginScreen(navController: NavController, vm: MainViewModel) {
                     }
             )
         }
-
         val isLoading = vm.inProgress.value
         if (isLoading) {
             ProgressSpinner()
         }
     }
-
 }
